@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RentEase – Add Property</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    nav { background: #1e1b4b; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+    nav .brand { color: #fff; font-size: 20px; font-weight: 800; text-decoration: none; }
+    nav .links a { color: rgba(255,255,255,0.8); text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 500; }
+    nav .links a:hover { color: #fff; }
+    .container { max-width: 640px; margin: 0 auto; padding: 36px 24px; }
+    h2 { font-size: 24px; color: #1f2937; margin-bottom: 6px; font-weight: 700; }
+    .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 28px; }
+    .card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    input, select { width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
+    input:focus, select:focus { border-color: #1e1b4b; }
+    .section-label { font-size: 13px; font-weight: 700; color: #4f46e5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; margin-top: 8px; border-top: 1px solid #f0f0f0; padding-top: 18px; }
+    .btn { width: 100%; padding: 13px; background: #1e1b4b; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn:hover { background: #312e81; }
+    .btn-back { display: inline-block; color: #4f46e5; text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 20px; }
+    .alert.error { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; padding: 12px 16px; border-radius: 8px; margin-bottom: 18px; font-size: 13px; }
+    .hint { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/owner/dashboard">🏠 RentEase <span style="font-size:12px;opacity:0.7;margin-left:4px;">Owner</span></a>
+    <div class="links">
+      <a href="/owner/properties">Properties</a>
+      <a href="/owner/bookings">Bookings</a>
+      <a href="/owner/add-property">+ Add</a>
+      <a href="/owner/profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <a class="btn-back" href="/owner/properties">← Back to Properties</a>
+    <h2>➕ Add New Property</h2>
+    <p class="subtitle">Fill in the details to list your property.</p>
+    <div class="card">
+      <% if (typeof error !== 'undefined' && error) { %><div class="alert error"><%= error %></div><% } %>
+      <form method="POST" action="/owner/add-property">
+
+        <div class="form-group">
+          <label>Property Name</label>
+          <input type="text" name="name" placeholder="e.g. Seaside Villa, Cozy Studio..." required />
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" name="location" placeholder="e.g. Goa, Mumbai, Manali..." required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price per Night (₹)</label>
+            <input type="number" name="price" placeholder="e.g. 2500" min="1" required />
+          </div>
+          <div class="form-group">
+            <label>Property Type</label>
+            <select name="type" required>
+              <option value="">Select type</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="villa">Villa</option>
+              <option value="studio">Studio</option>
+              <option value="condo">Condo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-label">🛏️ Amenities & Capacity</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Number of Rooms</label>
+            <input type="number" name="rooms" placeholder="e.g. 3" min="1" value="1" required />
+          </div>
+          <div class="form-group">
+            <label>Number of Toilets</label>
+            <input type="number" name="toilets" placeholder="e.g. 2" min="1" value="1" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Swimming Pools</label>
+            <input type="number" name="pools" placeholder="e.g. 1" min="0" value="0" />
+            <p class="hint">Enter 0 if no pool</p>
+          </div>
+          <div class="form-group">
+            <label>Parking Spots</label>
+            <input type="number" name="parking" placeholder="e.g. 2" min="0" value="0" />
+            <p class="hint">Number of cars that can park</p>
+          </div>
+        </div>
+
+        <button class="btn" type="submit">List Property</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

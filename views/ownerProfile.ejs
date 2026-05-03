@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RentEase – Owner Profile</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    nav { background: #1e1b4b; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+    nav .brand { color: #fff; font-size: 20px; font-weight: 800; text-decoration: none; }
+    nav .links a { color: rgba(255,255,255,0.8); text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 500; }
+    nav .links a:hover { color: #fff; }
+    .container { max-width: 560px; margin: 0 auto; padding: 36px 24px; }
+    h2 { font-size: 24px; color: #1f2937; margin-bottom: 6px; font-weight: 700; }
+    .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 28px; }
+    .card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #4338ca, #1e1b4b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; font-weight: 700; margin: 0 auto 24px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    input { width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; }
+    input:focus { border-color: #1e1b4b; }
+    input[readonly] { background: #f9fafb; color: #6b7280; cursor: not-allowed; }
+    .btn { width: 100%; padding: 12px; background: #1e1b4b; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn:hover { background: #312e81; }
+    .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 18px; font-size: 13px; }
+    .alert.error   { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; }
+    .alert.success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+    .role-badge { display: inline-block; background: #eef2ff; color: #4f46e5; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; margin: 0 auto 20px; display: block; text-align: center; width: fit-content; margin: 0 auto 24px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/owner/dashboard">🏠 RentEase <span style="font-size:12px;opacity:0.7;margin-left:4px;">Owner</span></a>
+    <div class="links">
+      <a href="/owner/properties">Properties</a>
+      <a href="/owner/bookings">Bookings</a>
+      <a href="/owner/add-property">+ Add</a>
+      <a href="/owner/profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h2>👤 Owner Profile</h2>
+    <p class="subtitle">Update your account information.</p>
+    <div class="card">
+      <div class="avatar"><%= user.fullname.charAt(0).toUpperCase() %></div>
+      <span class="role-badge">🏠 Property Owner</span>
+      <% if (error) { %><div class="alert error"><%= error %></div><% } %>
+      <% if (success) { %><div class="alert success"><%= success %></div><% } %>
+      <form method="POST" action="/owner/profile">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="fullname" value="<%= user.fullname %>" required />
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" value="<%= user.username %>" required />
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <input type="text" value="Property Owner" readonly />
+        </div>
+        <button class="btn" type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RentEase – Search Properties</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    nav { background: #4f46e5; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+    nav .brand { color: #fff; font-size: 20px; font-weight: 800; text-decoration: none; }
+    nav .links a { color: rgba(255,255,255,0.85); text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 500; }
+    nav .links a:hover { color: #fff; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 36px 24px; }
+    h2 { font-size: 24px; color: #1f2937; margin-bottom: 24px; font-weight: 700; }
+    .filters { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 28px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 14px; align-items: end; }
+    .filter-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .filter-group input, .filter-group select { width: 100%; padding: 9px 12px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
+    .filter-group input:focus, .filter-group select:focus { border-color: #4f46e5; }
+    .btn-search { padding: 10px 24px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .btn-search:hover { background: #4338ca; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+    .card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: transform 0.15s, box-shadow 0.15s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(79,70,229,0.14); }
+    .card-img { background: linear-gradient(135deg, #818cf8, #4f46e5); height: 140px; display: flex; align-items: center; justify-content: center; font-size: 52px; }
+    .card-body { padding: 20px; }
+    .card-type { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #4f46e5; background: #eef2ff; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+    .card-name { font-size: 17px; font-weight: 700; color: #1f2937; margin-bottom: 4px; }
+    .card-location { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+    .card-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .meta-pill { font-size: 12px; color: #374151; background: #f3f4f6; border-radius: 20px; padding: 3px 10px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .price { font-size: 18px; font-weight: 800; color: #4f46e5; }
+    .price span { font-size: 12px; color: #6b7280; font-weight: 400; }
+    .btn-view { padding: 8px 18px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+    .btn-view:hover { background: #4338ca; }
+    .empty { text-align: center; padding: 60px 20px; color: #6b7280; }
+    .empty .icon { font-size: 52px; margin-bottom: 16px; }
+    .results-count { color: #6b7280; font-size: 14px; margin-bottom: 20px; }
+    .prop-icon { font-size: 48px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/customer/dashboard">🏠 RentEase</a>
+    <div class="links">
+      <a href="/customer/search">Search</a>
+      <a href="/customer/bookings">My Bookings</a>
+      <a href="/customer/profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h2>🔍 Search Properties</h2>
+    <form class="filters" method="GET" action="/customer/search">
+      <div class="filter-group">
+        <label>Search by Name or Location</label>
+        <input type="text" name="q" value="<%= query %>" placeholder="e.g. Goa, Beach House..." />
+      </div>
+      <div class="filter-group">
+        <label>Type</label>
+        <select name="type">
+          <option value="all" <%= type === 'all' ? 'selected' : '' %>>All Types</option>
+          <option value="apartment" <%= type === 'apartment' ? 'selected' : '' %>>Apartment</option>
+          <option value="house" <%= type === 'house' ? 'selected' : '' %>>House</option>
+          <option value="villa" <%= type === 'villa' ? 'selected' : '' %>>Villa</option>
+          <option value="studio" <%= type === 'studio' ? 'selected' : '' %>>Studio</option>
+          <option value="condo" <%= type === 'condo' ? 'selected' : '' %>>Condo</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min Price (₹/night)</label>
+        <input type="number" name="minPrice" value="<%= minPrice %>" placeholder="0" min="0" />
+      </div>
+      <div class="filter-group">
+        <label>Max Price (₹/night)</label>
+        <input type="number" name="maxPrice" value="<%= maxPrice %>" placeholder="Any" min="0" />
+      </div>
+      <button class="btn-search" type="submit">Search</button>
+    </form>
+
+    <div class="results-count"><%= properties.length %> propert<%= properties.length === 1 ? 'y' : 'ies' %> found</div>
+
+    <% if (properties.length === 0) { %>
+      <div class="empty">
+        <div class="icon">🏘️</div>
+        <p>No properties found matching your criteria.</p>
+      </div>
+    <% } else { %>
+      <div class="grid">
+        <% properties.forEach(p => { %>
+          <div class="card">
+            <div class="card-img">
+              <span class="prop-icon">
+                <% if (p.type === 'villa') { %> 🏰
+                <% } else if (p.type === 'apartment') { %> 🏢
+                <% } else if (p.type === 'studio') { %> 🛋️
+                <% } else if (p.type === 'condo') { %> 🏙️
+                <% } else { %> 🏡
+                <% } %>
+              </span>
+            </div>
+            <div class="card-body">
+              <span class="card-type"><%= p.type %></span>
+              <div class="card-name"><%= p.name %></div>
+              <div class="card-location">📍 <%= p.location %></div>
+              <div class="card-meta">
+                <span class="meta-pill">🛏️ <%= p.rooms || 1 %> Room<%= (p.rooms || 1) > 1 ? 's' : '' %></span>
+                <span class="meta-pill">🚿 <%= p.toilets || 1 %> Toilet<%= (p.toilets || 1) > 1 ? 's' : '' %></span>
+                <% if (p.pools > 0) { %><span class="meta-pill">🏊 <%= p.pools %> Pool<%= p.pools > 1 ? 's' : '' %></span><% } %>
+                <% if (p.parking > 0) { %><span class="meta-pill">🚗 <%= p.parking %> Parking</span><% } %>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹<%= Number(p.price).toLocaleString('en-IN') %> <span>/night</span></div>
+                <a class="btn-view" href="/customer/property/<%= p.id %>">View →</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
