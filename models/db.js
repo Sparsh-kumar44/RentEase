@@ -2,14 +2,10 @@ import pkg from 'pg';
 const { Pool } = pkg;
 
 const pool = new Pool({
-    host: 'db.htlhbmjpmzivyunjcpsf.supabase.co',
-    port: 5432,
-    user: 'postgres',
-    password: 'mQv+qcXTp&S9cY-',
-    database: 'postgres',
-    ssl: {
-        rejectUnauthorized: false
-    }
+  connectionString: 'postgresql://postgres.htlhbmjpmzivyunjcpsf:mQv%2BqcXTp%26S9cY-@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres',
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 export default pool;

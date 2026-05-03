@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import db from './models/db.js'; 
 
 import authRoutes from './routes/authRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
@@ -39,4 +40,12 @@ app.get('/logout', (req, res) => {
 
 app.listen(3000, () => {
     console.log('Server running on http://localhost:3000');
+});
+app.get('/test', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM users');
+    res.json(result.rows);
+  } catch (err) {
+    res.send(err.message);
+  }
 });
